@@ -1,14 +1,15 @@
 name: Daily Cyber Threat Generator
 
 on:
+  workflow_dispatch:   # manual trigger only
   schedule:
-    # 10:30 AM IST = 5:00 AM UTC
+    # 10:35 AM IST = 5:05 AM UTC
     - cron: '5 5 * * *'
-  workflow_dispatch:
 
 jobs:
   run-generator:
     runs-on: ubuntu-latest
+    timeout-minutes: 30   # ⬅️ HARD STOP after 30 minutes
 
     steps:
       - name: Checkout repository
@@ -21,9 +22,10 @@ jobs:
 
       - name: Install dependencies
         run: |
+          ls -la
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run cyber-threat-generator
+      - name: Run cyber threat generator
         run: |
           python threat_generator.py
